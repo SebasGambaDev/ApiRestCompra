@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ApiRestCompra.Models;
 using ApiRestCompra.Repositories.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +13,7 @@ namespace ApiRestCompra.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CompraDetalleController : ControllerBase
     {
         private readonly IUnidadTrabajo _unidadTrabajo;
@@ -20,10 +23,28 @@ namespace ApiRestCompra.Controllers
             _unidadTrabajo = unidadTrabajo;
         }
 
+
+        private UserModel GetCurrentUser()
+        {
+            var identidad = HttpContext.User.Identity as ClaimsIdentity;
+            if(identidad != null)
+            {
+                var userClaims = identidad.Claims;
+
+                return new UserModel
+                {
+                    Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value
+                };
+            }
+            return null;
+        }
+
+
         // GET: api/CompraDetalle
         [HttpGet]
         public ActionResult Get()
         {
+            var currentUser = GetCurrentUser();
             try
             {
                 var compras = _unidadTrabajo.Compra.ObtenerTodos();
@@ -76,6 +97,14 @@ namespace ApiRestCompra.Controllers
         {
             try
             {
+                var Compras = _unidadTrabajo.Compra.ObtenerTodos();
+                var nroCompras = 1;
+                foreach(var c in Compras)
+                {
+                    nroCompras = (int)(c.NumeroFactura + 1);
+                }
+                
+
                 var detalles = compra.Detalles;
 
                 List<decimal?> valores = new List<decimal?>();
@@ -91,6 +120,7 @@ namespace ApiRestCompra.Controllers
 
                 decimal? subtotal = valores.Sum();
 
+                compra.NumeroFactura = nroCompras;
                 compra.TotalArticulos = subtotal;
                 compra.TotalImpuestosVenta = _unidadTrabajo.CalcularIva(subtotal);
                 compra.TotalImpuestosFlete = _unidadTrabajo.CalcularIva(compra.ValorFlete);
@@ -125,7 +155,7 @@ namespace ApiRestCompra.Controllers
                     var precio = item.ValorTotal;
                     valores.Add(precio);
                     item.CompraId = compra.Id;
-                    _unidadTrabajo.Detalle.Actualizar(item.Id, item);
+                    _unidadTrabajo.Detalle.Actualizar(item);
                 }
 
                 decimal? subtotal = valores.Sum();
@@ -135,10 +165,12 @@ namespace ApiRestCompra.Controllers
                 compra.TotalImpuestosFlete = _unidadTrabajo.CalcularIva(compra.ValorFlete);
                 compra.TotalImpuestosNetos = compra.TotalImpuestosFlete + compra.TotalImpuestosVenta;
                 compra.ValorTotalFactura = compra.TotalArticulos + compra.TotalImpuestosNetos + compra.ValorFlete;
-                
-                _unidadTrabajo.Compra.Actualizar(id, compra);
+
+                _unidadTrabajo.Compra.Actualizar(compra);
                 _unidadTrabajo.Guardar();
-                return CreatedAtRoute("GetCompraDetalle", new { id = id }, compra);
+                
+                
+                return CreatedAtRoute("GetCompraDetalle", new { id = compra.Id }, compra);
 
             }
             catch (Exception ex)

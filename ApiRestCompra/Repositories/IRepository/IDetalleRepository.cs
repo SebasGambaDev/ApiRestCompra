@@ -6,7 +6,7 @@ namespace ApiRestCompra.Repositories.IRepository
 {
     public interface IDetalleRespository : IRepository<Detalle>
     {
-        void Actualizar(int id, Detalle detalle);
+        public void Actualizar(Detalle detalle);
 
         ICollection<Detalle> ObtenerRelacionMuchos(int id);
 

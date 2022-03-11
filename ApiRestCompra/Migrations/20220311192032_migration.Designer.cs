@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiRestCompra.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220311174801_migration1")]
-    partial class migration1
+    [Migration("20220311192032_migration")]
+    partial class migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -80,7 +80,7 @@ namespace ApiRestCompra.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<int>("NumeroFactura")
+                    b.Property<int?>("NumeroFactura")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("TotalArticulos")

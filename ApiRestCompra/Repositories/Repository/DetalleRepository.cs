@@ -16,9 +16,9 @@ namespace ApiRestCompra.Repositories.Repository
             _db = db;
         }
 
-        public void Actualizar(int id, Detalle detalle)
+        public void Actualizar(Detalle detalle)
         {
-            var DetalleDb = _db.Detalles.FirstOrDefault(x => x.Id == id);
+            var DetalleDb = _db.Detalles.FirstOrDefault(x => x.Id == detalle.Id);
             if (DetalleDb != null)
             {
                 DetalleDb.CodigoReferencia = detalle.CodigoReferencia;

@@ -2,7 +2,7 @@
 
 namespace ApiRestCompra.Migrations
 {
-    public partial class migration1 : Migration
+    public partial class migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,7 +24,7 @@ namespace ApiRestCompra.Migrations
                     ClienteTelefono1 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     ClienteTelefono2 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     ValorFlete = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    NumeroFactura = table.Column<int>(type: "int", nullable: false),
+                    NumeroFactura = table.Column<int>(type: "int", nullable: true),
                     TotalArticulos = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     TotalImpuestosVenta = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     TotalImpuestosFlete = table.Column<decimal>(type: "decimal(18,2)", nullable: true),

@@ -15,9 +15,9 @@ namespace ApiRestCompra.Repositories.Repository
             _db = db;
         }
 
-        public void Actualizar(int id,Compra compra)
+        public void Actualizar(Compra compra)
         {
-            var CompraDb = _db.Compras.FirstOrDefault(x => x.Id == id);
+            var CompraDb = _db.Compras.FirstOrDefault(x => x.Id == compra.Id);
             if(CompraDb != null)
             {
                 CompraDb.ClienteApellido1 = compra.ClienteApellido1;
@@ -38,7 +38,9 @@ namespace ApiRestCompra.Repositories.Repository
                 CompraDb.ValorTotalFactura = compra.ValorTotalFactura;
 
                 
+                
             }
+            
         }
     }
 }

@@ -88,10 +88,10 @@ namespace ApiRestCompra.Controllers
         {
             try
             {
-                _unidadTrabajo.Compra.Actualizar(id, compra);
+                _unidadTrabajo.Compra.Actualizar(compra);
                 _unidadTrabajo.Guardar();
-                var obj = _unidadTrabajo.Compra.Obtener(id);
-                return CreatedAtRoute("GetCompra", new { id = obj.Id }, obj);
+                
+                return CreatedAtRoute("GetCompra", new { id = compra.Id }, compra);
                 
             }
             catch (Exception ex)

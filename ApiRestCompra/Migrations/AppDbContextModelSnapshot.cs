@@ -78,7 +78,7 @@ namespace ApiRestCompra.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<int>("NumeroFactura")
+                    b.Property<int?>("NumeroFactura")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("TotalArticulos")

@@ -59,7 +59,8 @@ namespace ApiRestCompra.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal ValorFlete { get; set; }
 
-        public int NumeroFactura { get; set; }
+        [Column(Order = 1)]
+        public int? NumeroFactura { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal? TotalArticulos { get; set; }
@@ -75,7 +76,6 @@ namespace ApiRestCompra.Models
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal? ValorTotalFactura { get; set; }
-
 
 
         public virtual ICollection<Detalle> Detalles { get; set; }

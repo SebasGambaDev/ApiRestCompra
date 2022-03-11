@@ -88,9 +88,10 @@ namespace ApiRestCompra.Controllers
         {
             try
             {
-                _unidadTrabajo.Detalle.Actualizar(id, detalle);
-                _unidadTrabajo.Guardar();
                 var obj = _unidadTrabajo.Detalle.Obtener(id);
+                _unidadTrabajo.Detalle.Actualizar(detalle);
+                _unidadTrabajo.Guardar();
+                
                 return CreatedAtRoute("GetDetalle", new { id = obj.Id }, obj);
 
             }
