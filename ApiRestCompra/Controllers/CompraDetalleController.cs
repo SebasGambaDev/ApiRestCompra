@@ -8,6 +8,7 @@ using ApiRestCompra.Repositories.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ApiRestCompra.Controllers
 {
@@ -18,14 +19,19 @@ namespace ApiRestCompra.Controllers
     {
         private readonly IUnidadTrabajo _unidadTrabajo;
 
-        public CompraDetalleController(IUnidadTrabajo unidadTrabajo)
+        private readonly ILogger<CompraDetalleController> _logger;
+
+        public CompraDetalleController(IUnidadTrabajo unidadTrabajo, ILogger<CompraDetalleController> logger)
         {
             _unidadTrabajo = unidadTrabajo;
+            _logger = logger;
         }
 
 
         private UserModel GetCurrentUser()
         {
+            _logger.LogWarning("Llamar usuario autenticado o autorizado");
+
             var identidad = HttpContext.User.Identity as ClaimsIdentity;
             if(identidad != null)
             {
@@ -44,6 +50,7 @@ namespace ApiRestCompra.Controllers
         [HttpGet]
         public ActionResult Get()
         {
+            _logger.LogWarning("Se obtienen todos los registros Compra-Detalle");
             var currentUser = GetCurrentUser();
             try
             {
@@ -68,6 +75,7 @@ namespace ApiRestCompra.Controllers
         [HttpGet("{id}", Name = "GetCompraDetalle")]
         public ActionResult Get(int id)
         {
+            _logger.LogWarning("Se obtienen un registro Compra-Detalle por id");
             try
             {
                 var compra = _unidadTrabajo.Compra.Obtener(id);
@@ -95,6 +103,7 @@ namespace ApiRestCompra.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] Compra compra)
         {
+            _logger.LogWarning("Se crean nuevo registro Compra-Detalles");
             try
             {
                 var Compras = _unidadTrabajo.Compra.ObtenerTodos();
@@ -143,6 +152,7 @@ namespace ApiRestCompra.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Compra compra)
         {
+            _logger.LogWarning("Se actualizan los datos de Compra-Detalles dado su id");
             try
             {
                 var detalles = compra.Detalles;
@@ -183,6 +193,7 @@ namespace ApiRestCompra.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
+            _logger.LogWarning("Se elimina los registros Compra-Detalles dado su id");
             try
             {
                 _unidadTrabajo.Detalle.RemoverRelacionados(id);

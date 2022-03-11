@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiRestCompra.Models;
 using ApiRestCompra.Repositories.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,7 @@ namespace ApiRestCompra.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CompraController : ControllerBase
     {
         private readonly IUnidadTrabajo _unidadTrabajo;

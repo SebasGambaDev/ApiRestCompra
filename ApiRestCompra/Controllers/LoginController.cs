@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ApiRestCompra.Controllers
@@ -20,15 +21,20 @@ namespace ApiRestCompra.Controllers
     {
         private IConfiguration _config;
 
-        public LoginController(IConfiguration config)
+        private readonly ILogger<CompraDetalleController> _logger;
+
+        public LoginController(IConfiguration config, ILogger<CompraDetalleController> logger)
         {
             _config = config;
+            _logger = logger;
         }
 
         [AllowAnonymous]
         [HttpPost]
         public ActionResult Login([FromBody] UserLogin userLogin)
         {
+            _logger.LogWarning("Usuario se loguea y retorna el token de autorizacion");
+
             var user = Authenticate(userLogin);
 
             if(user != null)
