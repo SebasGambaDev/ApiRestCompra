@@ -2,12 +2,12 @@
 
 namespace ApiRestCompra.Migrations
 {
-    public partial class firstMigration : Migration
+    public partial class migration1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Compra",
+                name: "Compras",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -25,15 +25,15 @@ namespace ApiRestCompra.Migrations
                     ClienteTelefono2 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     ValorFlete = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     NumeroFactura = table.Column<int>(type: "int", nullable: false),
-                    TotalArticulos = table.Column<int>(type: "int", nullable: false),
-                    TotalImpuestosVenta = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TotalImpuestosFlete = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TotalImpuestosNetos = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ValorTotalFactura = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    TotalArticulos = table.Column<int>(type: "int", nullable: true),
+                    TotalImpuestosVenta = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    TotalImpuestosFlete = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    TotalImpuestosNetos = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    ValorTotalFactura = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Compra", x => x.Id);
+                    table.PrimaryKey("PK_Compras", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,16 +47,16 @@ namespace ApiRestCompra.Migrations
                     ValorUnitario = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     referencia = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    ValorTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ValorTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     CompraId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Detalles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Detalles_Compra_CompraId",
+                        name: "FK_Detalles_Compras_CompraId",
                         column: x => x.CompraId,
-                        principalTable: "Compra",
+                        principalTable: "Compras",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -73,7 +73,7 @@ namespace ApiRestCompra.Migrations
                 name: "Detalles");
 
             migrationBuilder.DropTable(
-                name: "Compra");
+                name: "Compras");
         }
     }
 }

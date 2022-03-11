@@ -57,33 +57,23 @@ namespace ApiRestCompra.Models
         public string? ClienteTelefono2 { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-        [RegularExpression(@"^\d+(\.\d{1,2})?$")]
-        [Range(0, 9999999999999999.99)]
         public decimal ValorFlete { get; set; }
 
         public int NumeroFactura { get; set; }
 
-        public int TotalArticulos { get; set; }
+        public int? TotalArticulos { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-        [RegularExpression(@"^\d+(\.\d{1,2})?$")]
-        [Range(0, 9999999999999999.99)]
-        public decimal TotalImpuestosVenta { get; set; }
+        public decimal? TotalImpuestosVenta { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-        [RegularExpression(@"^\d+(\.\d{1,2})?$")]
-        [Range(0, 9999999999999999.99)]
-        public decimal TotalImpuestosFlete { get; set; }
+        public decimal? TotalImpuestosFlete { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-        [RegularExpression(@"^\d+(\.\d{1,2})?$")]
-        [Range(0, 9999999999999999.99)]
-        public decimal TotalImpuestosNetos { get; set; }
+        public decimal? TotalImpuestosNetos { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-        [RegularExpression(@"^\d+(\.\d{1,2})?$")]
-        [Range(0, 9999999999999999.99)]
-        public decimal ValorTotalFactura { get; set; }
+        public decimal? ValorTotalFactura { get; set; }
 
 
 

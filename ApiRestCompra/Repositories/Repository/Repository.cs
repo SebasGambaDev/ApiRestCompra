@@ -1,29 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using ApiRestCompra.Context;
 using ApiRestCompra.Repositories.IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiRestCompra.Repositories.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
+        private readonly AppDbContext _db;
+        internal DbSet<T> dbSet;
+
+        public Repository(AppDbContext db)
+        {
+            _db = db;
+            this.dbSet = _db.Set<T>();
+        }
+
         public void Agregar(T entidad)
         {
-            throw new NotImplementedException();
+            dbSet.Add(entidad);
         }
 
         public T Obtener(int id)
         {
-            throw new NotImplementedException();
+            return dbSet.Find(id);
         }
 
         public IEnumerable<T> ObtenerTodos()
         {
-            throw new NotImplementedException();
+            return dbSet.ToList();
         }
 
         public void Remover(int id)
         {
-            throw new NotImplementedException();
+            T entidad = dbSet.Find(id);
+            dbSet.Remove(entidad);
         }
     }
 }

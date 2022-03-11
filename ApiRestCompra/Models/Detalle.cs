@@ -29,9 +29,7 @@ namespace ApiRestCompra.Models
         public string? referencia { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-        [RegularExpression(@"^\d+(\.\d{1,2})?$")]
-        [Range(0, 9999999999999999.99)]
-        public decimal ValorTotal { get; set; }
+        public decimal? ValorTotal { get; set; }
 
         //foreing keys
 

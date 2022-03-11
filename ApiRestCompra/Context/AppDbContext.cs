@@ -11,7 +11,7 @@ namespace ApiRestCompra.Context
         {
         }
 
-        public DbSet<Compra> Compra { get; set; }
+        public DbSet<Compra> Compras { get; set; }
         public DbSet<Detalle> Detalles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
