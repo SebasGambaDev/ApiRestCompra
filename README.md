@@ -1,8 +1,8 @@
 # ApiRestCompra
 
-Esta es un Api Rest que permite hacer el crud sobre las entidades Compra-Detalle.
+This is a Api Rest that allows you to do the crud on the Purchase-Detail entities.
 
-Esta Api Rest fue creada bajo solicitud de un proceso de admision laboral.
+This Api Rest was created at the request of a job admission process.
 
 ## Table of contents
 
@@ -17,9 +17,9 @@ Esta Api Rest fue creada bajo solicitud de un proceso de admision laboral.
 
 ### The challenge
 
-- Crear Api Rest que permitiera consultar,crear,editar y eliminar las entidades Compra-Detalles.
-- Usuario debe haber un servicio de autenticación por medio de usuario y contraseña retornando un token con una vigencia de 60 minutos.
-- Creación de tabla log para validar trazabilidad.
+- Create Api Rest that would allow querying, creating, editing and deleting Purchase-Details entities.
+- User must have an authentication service by means of username and password returning a token with a validity of 60 minutes.
+- Creation of log table to validate traceability.
 
 ### Screenshot
 
@@ -51,7 +51,7 @@ Esta Api Rest fue creada bajo solicitud de un proceso de admision laboral.
 - Entity Framework Core (ORM). 
 - First Code workflow.
 - Serilog (logs).
-- Jwt Token.
+- Jwt (Token).
 
 ## Author
 
