@@ -81,8 +81,8 @@ namespace ApiRestCompra.Migrations
                     b.Property<int>("NumeroFactura")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TotalArticulos")
-                        .HasColumnType("int");
+                    b.Property<decimal?>("TotalArticulos")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("TotalImpuestosFlete")
                         .HasColumnType("decimal(18,2)");

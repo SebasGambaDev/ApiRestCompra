@@ -26,5 +26,25 @@ namespace ApiRestCompra.Repositories.Repository
         {
             _db.Dispose();
         }
+
+        decimal IUnidadTrabajo.CalcularIva(decimal? valor)
+        {
+            const int IvaPorcentaje = 19;
+
+            var nuevoValor = (IvaPorcentaje * valor) / 100;
+
+            var Impuesto = Math.Round((decimal)nuevoValor, 2);
+
+            return Impuesto;
+        }
+
+        decimal IUnidadTrabajo.CalcularPrecioDetalle(int cantidad, decimal valor)
+        {
+            var result = cantidad * valor;
+            return result;
+            
+        }
+
+
     }
 }

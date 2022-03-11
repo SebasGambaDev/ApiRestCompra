@@ -25,7 +25,7 @@ namespace ApiRestCompra.Migrations
                     ClienteTelefono2 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     ValorFlete = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     NumeroFactura = table.Column<int>(type: "int", nullable: false),
-                    TotalArticulos = table.Column<int>(type: "int", nullable: true),
+                    TotalArticulos = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     TotalImpuestosVenta = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     TotalImpuestosFlete = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     TotalImpuestosNetos = table.Column<decimal>(type: "decimal(18,2)", nullable: true),

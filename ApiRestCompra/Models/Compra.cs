@@ -61,7 +61,8 @@ namespace ApiRestCompra.Models
 
         public int NumeroFactura { get; set; }
 
-        public int? TotalArticulos { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal? TotalArticulos { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal? TotalImpuestosVenta { get; set; }

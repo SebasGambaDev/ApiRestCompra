@@ -7,5 +7,10 @@ namespace ApiRestCompra.Repositories.IRepository
         IDetalleRespository Detalle { get; }
 
         void Guardar();
+
+        decimal CalcularIva(decimal? valor);
+
+        decimal CalcularPrecioDetalle(int cantidad, decimal valor);
     }
+
 }

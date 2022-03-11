@@ -72,8 +72,41 @@ namespace ApiRestCompra.Controllers
 
         // POST: api/CompraDetalle
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult Post([FromBody] Compra compra)
         {
+            try
+            {
+                var detalles = compra.Detalles;
+
+                List<decimal?> valores = new List<decimal?>();
+                
+                foreach (var item in detalles)
+                {
+                    item.ValorTotal = _unidadTrabajo.CalcularPrecioDetalle(item.Cantidad, item.ValorUnitario);
+                    var precio = item.ValorTotal;
+                    valores.Add(precio);
+                    item.CompraId = compra.Id;
+                    _unidadTrabajo.Detalle.Agregar(item);
+                }
+
+                decimal? subtotal = valores.Sum();
+
+                compra.TotalArticulos = subtotal;
+                compra.TotalImpuestosVenta = _unidadTrabajo.CalcularIva(subtotal);
+                compra.TotalImpuestosFlete = _unidadTrabajo.CalcularIva(compra.ValorFlete);
+                compra.TotalImpuestosNetos = compra.TotalImpuestosFlete + compra.TotalImpuestosVenta;
+                compra.ValorTotalFactura = compra.TotalArticulos + compra.TotalImpuestosNetos + compra.ValorFlete;
+                _unidadTrabajo.Compra.Agregar(compra);
+                _unidadTrabajo.Guardar();
+
+                return CreatedAtRoute("GetCompra", new { id = compra.Id }, compra);
+
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         // PUT: api/CompraDetalle/5

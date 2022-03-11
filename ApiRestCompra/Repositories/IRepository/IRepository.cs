@@ -12,6 +12,8 @@ namespace ApiRestCompra.Repositories.IRepository
         void Agregar(T entidad);
 
         void Remover(int id);
+
+        
  
     }
 }
