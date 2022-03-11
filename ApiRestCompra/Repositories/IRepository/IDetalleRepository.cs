@@ -9,5 +9,7 @@ namespace ApiRestCompra.Repositories.IRepository
         void Actualizar(int id, Detalle detalle);
 
         ICollection<Detalle> ObtenerRelacionMuchos(int id);
+
+        public void RemoverRelacionados(int id);
     }
 }

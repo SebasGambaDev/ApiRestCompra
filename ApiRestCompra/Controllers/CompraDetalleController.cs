@@ -99,7 +99,7 @@ namespace ApiRestCompra.Controllers
                 _unidadTrabajo.Compra.Agregar(compra);
                 _unidadTrabajo.Guardar();
 
-                return CreatedAtRoute("GetCompra", new { id = compra.Id }, compra);
+                return CreatedAtRoute("GetCompraDetalle", new { id = compra.Id }, compra);
 
             }
             catch(Exception ex)
@@ -111,14 +111,57 @@ namespace ApiRestCompra.Controllers
 
         // PUT: api/CompraDetalle/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult Put(int id, [FromBody] Compra compra)
         {
+            try
+            {
+                var detalles = compra.Detalles;
+
+                List<decimal?> valores = new List<decimal?>();
+
+                foreach (var item in detalles)
+                {
+                    item.ValorTotal = _unidadTrabajo.CalcularPrecioDetalle(item.Cantidad, item.ValorUnitario);
+                    var precio = item.ValorTotal;
+                    valores.Add(precio);
+                    item.CompraId = compra.Id;
+                    _unidadTrabajo.Detalle.Actualizar(item.Id, item);
+                }
+
+                decimal? subtotal = valores.Sum();
+
+                compra.TotalArticulos = subtotal;
+                compra.TotalImpuestosVenta = _unidadTrabajo.CalcularIva(subtotal);
+                compra.TotalImpuestosFlete = _unidadTrabajo.CalcularIva(compra.ValorFlete);
+                compra.TotalImpuestosNetos = compra.TotalImpuestosFlete + compra.TotalImpuestosVenta;
+                compra.ValorTotalFactura = compra.TotalArticulos + compra.TotalImpuestosNetos + compra.ValorFlete;
+                
+                _unidadTrabajo.Compra.Actualizar(id, compra);
+                _unidadTrabajo.Guardar();
+                return CreatedAtRoute("GetCompraDetalle", new { id = id }, compra);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // DELETE: api/CompraDetalle/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
+            try
+            {
+                _unidadTrabajo.Detalle.RemoverRelacionados(id);
+                _unidadTrabajo.Compra.Remover(id);
+                _unidadTrabajo.Guardar();
+                return Ok(id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

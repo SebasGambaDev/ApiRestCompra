@@ -34,5 +34,15 @@ namespace ApiRestCompra.Repositories.Repository
         {
             return _db.Detalles.Where(x => x.CompraId == id).ToList();
         }
+
+        public void RemoverRelacionados(int id)
+        {
+            var entidades = _db.Detalles.Where(x => x.CompraId == id).ToList();
+            foreach (var e in entidades)
+            {
+                _db.Remove(e);
+            }
+           
+        }
     }
 }
