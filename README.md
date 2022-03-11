@@ -18,6 +18,7 @@ This Api Rest was created at the request of a job admission process.
 ### The challenge
 
 - Create Api Rest that would allow querying, creating, editing and deleting Purchase-Details entities.
+- Calculate implicit values ​​in the purchase and the detail (taxes, totals, etc.).
 - User must have an authentication service by means of username and password returning a token with a validity of 60 minutes.
 - Creation of log table to validate traceability.
 
