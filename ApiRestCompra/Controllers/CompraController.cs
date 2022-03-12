@@ -7,6 +7,7 @@ using ApiRestCompra.Repositories.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ApiRestCompra.Controllers
 {
@@ -16,10 +17,13 @@ namespace ApiRestCompra.Controllers
     public class CompraController : ControllerBase
     {
         private readonly IUnidadTrabajo _unidadTrabajo;
+        private readonly ILogger<CompraDetalleController> _logger;
 
-        public CompraController(IUnidadTrabajo unidadTrabajo)
+
+        public CompraController(IUnidadTrabajo unidadTrabajo, ILogger<CompraDetalleController> logger)
         {
             _unidadTrabajo = unidadTrabajo;
+            _logger = logger;
         }
 
         // GET: api/Compra
@@ -35,11 +39,13 @@ namespace ApiRestCompra.Controllers
                 }
                 else
                 {
+                    _logger.LogInformation("Se obtienen todos los registros de la tabla Compras");
                     return Ok(compras);
                 }
             }
             catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -57,11 +63,13 @@ namespace ApiRestCompra.Controllers
                 }
                 else
                 {
+                    _logger.LogInformation("Se obtiene el registro de la tabla Compras con id " + id);
                     return Ok(compra);
                 }
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -74,11 +82,13 @@ namespace ApiRestCompra.Controllers
             {
                 _unidadTrabajo.Compra.Agregar(compra);
                 _unidadTrabajo.Guardar();
-                
+
+                _logger.LogInformation("Se crea un nuevo registro en la tabla Compras con id" + compra.Id);
                 return CreatedAtRoute("GetCompra", new { id = compra.Id}, compra);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
 
@@ -92,12 +102,14 @@ namespace ApiRestCompra.Controllers
             {
                 _unidadTrabajo.Compra.Actualizar(compra);
                 _unidadTrabajo.Guardar();
-                
+
+                _logger.LogInformation("Se actualizan los datos de un registro en la tabla Compras con id" + compra.Id);
                 return CreatedAtRoute("GetCompra", new { id = compra.Id }, compra);
                 
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -110,10 +122,13 @@ namespace ApiRestCompra.Controllers
             {
                 _unidadTrabajo.Compra.Remover(id);
                 _unidadTrabajo.Guardar();
+
+                _logger.LogInformation("Se elimina registro de la tabla Compras con id " + id);
                 return Ok(id);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }

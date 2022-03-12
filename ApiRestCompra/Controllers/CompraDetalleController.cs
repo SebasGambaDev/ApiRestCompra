@@ -50,7 +50,6 @@ namespace ApiRestCompra.Controllers
         [HttpGet]
         public ActionResult Get()
         {
-            _logger.LogWarning("Se obtienen todos los registros Compra-Detalle");
             var currentUser = GetCurrentUser();
             try
             {
@@ -61,12 +60,13 @@ namespace ApiRestCompra.Controllers
                     var detalles = _unidadTrabajo.Detalle.ObtenerRelacionMuchos(id);
                     obj.Detalles = detalles;
                 }
-                
+                _logger.LogWarning("Se obtienen todos los registros de la tabla Compras con sus registros relacionados de la tabla Detalles");
                 return Ok(compras);
                 
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -75,7 +75,6 @@ namespace ApiRestCompra.Controllers
         [HttpGet("{id}", Name = "GetCompraDetalle")]
         public ActionResult Get(int id)
         {
-            _logger.LogWarning("Se obtienen un registro Compra-Detalle por id");
             try
             {
                 var compra = _unidadTrabajo.Compra.Obtener(id);
@@ -90,11 +89,13 @@ namespace ApiRestCompra.Controllers
                     {
                         compra.Detalles.Add(item);
                     }
+                    _logger.LogWarning("Se obtiene el registro Compra con id " + id + "y los registros Detalles relacionados a este.");
                     return Ok(compra);
                 }
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -103,7 +104,7 @@ namespace ApiRestCompra.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] Compra compra)
         {
-            _logger.LogWarning("Se crean nuevo registro Compra-Detalles");
+            
             try
             {
                 var Compras = _unidadTrabajo.Compra.ObtenerTodos();
@@ -138,11 +139,13 @@ namespace ApiRestCompra.Controllers
                 _unidadTrabajo.Compra.Agregar(compra);
                 _unidadTrabajo.Guardar();
 
+                _logger.LogWarning("Se crea un nuevo registro en la tabla Compra con registros relacionados en la tabla detalles");
                 return CreatedAtRoute("GetCompraDetalle", new { id = compra.Id }, compra);
 
             }
             catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
 
@@ -152,7 +155,6 @@ namespace ApiRestCompra.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Compra compra)
         {
-            _logger.LogWarning("Se actualizan los datos de Compra-Detalles dado su id");
             try
             {
                 var detalles = compra.Detalles;
@@ -178,13 +180,14 @@ namespace ApiRestCompra.Controllers
 
                 _unidadTrabajo.Compra.Actualizar(compra);
                 _unidadTrabajo.Guardar();
-                
-                
+
+                _logger.LogWarning("Se actualizan el registro Compra con id "+ id + "y los registros de la tabla detalle relacionados a este");
                 return CreatedAtRoute("GetCompraDetalle", new { id = compra.Id }, compra);
 
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -193,16 +196,17 @@ namespace ApiRestCompra.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            _logger.LogWarning("Se elimina los registros Compra-Detalles dado su id");
             try
             {
                 _unidadTrabajo.Detalle.RemoverRelacionados(id);
                 _unidadTrabajo.Compra.Remover(id);
                 _unidadTrabajo.Guardar();
+                _logger.LogInformation("Se elimina el registro Compra con ID("+ id +") con los registros Detalles relacionados a este");
                 return Ok(id);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }

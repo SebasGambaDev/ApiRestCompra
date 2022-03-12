@@ -7,6 +7,7 @@ using ApiRestCompra.Repositories.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ApiRestCompra.Controllers
 {
@@ -17,9 +18,12 @@ namespace ApiRestCompra.Controllers
     {
         private readonly IUnidadTrabajo _unidadTrabajo;
 
-        public DetalleController(IUnidadTrabajo unidadTrabajo)
+        private readonly ILogger<CompraDetalleController> _logger;
+
+        public DetalleController(IUnidadTrabajo unidadTrabajo, ILogger<CompraDetalleController> logger)
         {
             _unidadTrabajo = unidadTrabajo;
+            _logger = logger;
         }
 
         // GET: api/Detalle
@@ -35,11 +39,13 @@ namespace ApiRestCompra.Controllers
                 }
                 else
                 {
+                    _logger.LogInformation("Se obtienen todos los registros de la tabla detalles");
                     return Ok(compras);
                 }
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -57,11 +63,13 @@ namespace ApiRestCompra.Controllers
                 }
                 else
                 {
+                    _logger.LogInformation("Se obtiene un registro de la tabla detalles dado su id " + id);
                     return Ok(detalle);
                 }
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -75,10 +83,12 @@ namespace ApiRestCompra.Controllers
                 _unidadTrabajo.Detalle.Agregar(detalle);
                 _unidadTrabajo.Guardar();
 
+                _logger.LogInformation("Se crea registro en la tabla Compras con Id " + detalle.Id);
                 return CreatedAtRoute("GetDetalle", new { id = detalle.Id }, detalle);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
 
@@ -93,12 +103,14 @@ namespace ApiRestCompra.Controllers
                 var obj = _unidadTrabajo.Detalle.Obtener(id);
                 _unidadTrabajo.Detalle.Actualizar(detalle);
                 _unidadTrabajo.Guardar();
-                
+
+                _logger.LogInformation("Se actualizan los datos del registro con id "+ detalle.Id + " en la tabla detalles");
                 return CreatedAtRoute("GetDetalle", new { id = obj.Id }, obj);
 
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -111,10 +123,12 @@ namespace ApiRestCompra.Controllers
             {
                 _unidadTrabajo.Detalle.Remover(id);
                 _unidadTrabajo.Guardar();
+                _logger.LogInformation("Se elimina el  registro con id " + id + " en la tabla detalles");
                 return Ok(id);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
